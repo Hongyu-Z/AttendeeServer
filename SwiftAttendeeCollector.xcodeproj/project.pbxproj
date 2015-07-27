@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		00091C6BE50F67E8EF19D22A /* Pods_SwiftAttendeeCollector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0B6C8806F82CEC4FBD63EBBC /* Pods_SwiftAttendeeCollector.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		1E9A139D1B66E59400CC9813 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A139C1B66E59400CC9813 /* AppDelegate.swift */; };
 		1E9A139F1B66E59400CC9813 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A139E1B66E59400CC9813 /* ViewController.swift */; };
 		1E9A13A21B66E59400CC9813 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1E9A13A01B66E59400CC9813 /* Main.storyboard */; };
@@ -26,6 +27,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0B6C8806F82CEC4FBD63EBBC /* Pods_SwiftAttendeeCollector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SwiftAttendeeCollector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		15BDC1D8341BE1EE8B674755 /* Pods-SwiftAttendeeCollector.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftAttendeeCollector.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftAttendeeCollector/Pods-SwiftAttendeeCollector.debug.xcconfig"; sourceTree = "<group>"; };
 		1E9A13971B66E59400CC9813 /* SwiftAttendeeCollector.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SwiftAttendeeCollector.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E9A139B1B66E59400CC9813 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1E9A139C1B66E59400CC9813 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -36,6 +39,7 @@
 		1E9A13AC1B66E59400CC9813 /* SwiftAttendeeCollectorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftAttendeeCollectorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E9A13B11B66E59400CC9813 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1E9A13B21B66E59400CC9813 /* SwiftAttendeeCollectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftAttendeeCollectorTests.swift; sourceTree = "<group>"; };
+		E194068B629376980D0B92EC /* Pods-SwiftAttendeeCollector.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftAttendeeCollector.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftAttendeeCollector/Pods-SwiftAttendeeCollector.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				00091C6BE50F67E8EF19D22A /* Pods_SwiftAttendeeCollector.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -62,6 +67,8 @@
 				1E9A13991B66E59400CC9813 /* SwiftAttendeeCollector */,
 				1E9A13AF1B66E59400CC9813 /* SwiftAttendeeCollectorTests */,
 				1E9A13981B66E59400CC9813 /* Products */,
+				E4B39B491C4C6E1DD1E06798 /* Pods */,
+				AEDA36C95815583181CFC13B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -112,6 +119,23 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
+		AEDA36C95815583181CFC13B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0B6C8806F82CEC4FBD63EBBC /* Pods_SwiftAttendeeCollector.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E4B39B491C4C6E1DD1E06798 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				15BDC1D8341BE1EE8B674755 /* Pods-SwiftAttendeeCollector.debug.xcconfig */,
+				E194068B629376980D0B92EC /* Pods-SwiftAttendeeCollector.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -119,9 +143,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1E9A13B61B66E59400CC9813 /* Build configuration list for PBXNativeTarget "SwiftAttendeeCollector" */;
 			buildPhases = (
+				88CB36566BF459516A06C600 /* Check Pods Manifest.lock */,
 				1E9A13931B66E59400CC9813 /* Sources */,
 				1E9A13941B66E59400CC9813 /* Frameworks */,
 				1E9A13951B66E59400CC9813 /* Resources */,
+				34005E122F27A9503C1E0626 /* Embed Pods Frameworks */,
+				8D1BC66E24223005CE914773 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -206,6 +233,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		34005E122F27A9503C1E0626 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SwiftAttendeeCollector/Pods-SwiftAttendeeCollector-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		88CB36566BF459516A06C600 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		8D1BC66E24223005CE914773 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SwiftAttendeeCollector/Pods-SwiftAttendeeCollector-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1E9A13931B66E59400CC9813 /* Sources */ = {
@@ -340,6 +415,7 @@
 		};
 		1E9A13B71B66E59400CC9813 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 15BDC1D8341BE1EE8B674755 /* Pods-SwiftAttendeeCollector.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = SwiftAttendeeCollector/Info.plist;
@@ -350,6 +426,7 @@
 		};
 		1E9A13B81B66E59400CC9813 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = E194068B629376980D0B92EC /* Pods-SwiftAttendeeCollector.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = SwiftAttendeeCollector/Info.plist;
@@ -411,6 +488,7 @@
 				1E9A13B81B66E59400CC9813 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		1E9A13B91B66E59400CC9813 /* Build configuration list for PBXNativeTarget "SwiftAttendeeCollectorTests" */ = {
 			isa = XCConfigurationList;
@@ -419,6 +497,7 @@
 				1E9A13BB1B66E59400CC9813 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
