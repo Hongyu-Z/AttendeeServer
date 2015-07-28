@@ -14,6 +14,8 @@
 		1E9A13A41B66E59400CC9813 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E9A13A31B66E59400CC9813 /* Images.xcassets */; };
 		1E9A13A71B66E59400CC9813 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1E9A13A51B66E59400CC9813 /* LaunchScreen.xib */; };
 		1E9A13B31B66E59400CC9813 /* SwiftAttendeeCollectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A13B21B66E59400CC9813 /* SwiftAttendeeCollectorTests.swift */; };
+		1E9A13BD1B66EA5500CC9813 /* Attendee.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A13BC1B66EA5500CC9813 /* Attendee.swift */; };
+		1E9A13BF1B66EFE800CC9813 /* AttendeeManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9A13BE1B66EFE800CC9813 /* AttendeeManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,6 +41,8 @@
 		1E9A13AC1B66E59400CC9813 /* SwiftAttendeeCollectorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftAttendeeCollectorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E9A13B11B66E59400CC9813 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1E9A13B21B66E59400CC9813 /* SwiftAttendeeCollectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftAttendeeCollectorTests.swift; sourceTree = "<group>"; };
+		1E9A13BC1B66EA5500CC9813 /* Attendee.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Attendee.swift; sourceTree = "<group>"; };
+		1E9A13BE1B66EFE800CC9813 /* AttendeeManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttendeeManager.swift; sourceTree = "<group>"; };
 		E194068B629376980D0B92EC /* Pods-SwiftAttendeeCollector.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SwiftAttendeeCollector.release.xcconfig"; path = "Pods/Target Support Files/Pods-SwiftAttendeeCollector/Pods-SwiftAttendeeCollector.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -84,6 +88,8 @@
 		1E9A13991B66E59400CC9813 /* SwiftAttendeeCollector */ = {
 			isa = PBXGroup;
 			children = (
+				1E9A13BC1B66EA5500CC9813 /* Attendee.swift */,
+				1E9A13BE1B66EFE800CC9813 /* AttendeeManager.swift */,
 				1E9A139C1B66E59400CC9813 /* AppDelegate.swift */,
 				1E9A139E1B66E59400CC9813 /* ViewController.swift */,
 				1E9A13A01B66E59400CC9813 /* Main.storyboard */,
@@ -287,6 +293,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1E9A13BD1B66EA5500CC9813 /* Attendee.swift in Sources */,
+				1E9A13BF1B66EFE800CC9813 /* AttendeeManager.swift in Sources */,
 				1E9A139F1B66E59400CC9813 /* ViewController.swift in Sources */,
 				1E9A139D1B66E59400CC9813 /* AppDelegate.swift in Sources */,
 			);
