@@ -8,22 +8,185 @@
 
 import UIKit
 import CoreBluetooth
+import CoreLocation
 import MultipeerConnectivity
 
 
-class ViewController: UIViewController, CBPeripheralManagerDelegate, MCNearbyServiceAdvertiserDelegate {
+class ViewController: UIViewController, CBPeripheralManagerDelegate, MCNearbyServiceAdvertiserDelegate, MCSessionDelegate, UITableViewDataSource, UITableViewDelegate {
+
+
+    @IBOutlet weak var startSearchButton: UIButton!
+    @IBOutlet weak var tableView: UITableView!
+    
+    var peripheralManager:CBPeripheralManager!
+    var advertiser:MCNearbyServiceAdvertiser!
+    var localPeerID:MCPeerID!
+    var session : MCSession!
+    var tableArrayDate = Array<Attendee>()
+    var includedAttendees = Set<Attendee>()
+    var attendeeManager:AttendeeManager!
+    var isAdvertising:Bool = false
+    var isRanging:Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        var mcAd:MCNearbyServiceAdvertiser!
+        self.localPeerID = MCPeerID(displayName:UIDevice.currentDevice().name)
+        self.peripheralManager = CBPeripheralManager(delegate: self, queue: nil)
+        self.session = MCSession(peer: self.localPeerID, securityIdentity: nil, encryptionPreference: MCEncryptionPreference.None)
+        self.advertiser = MCNearbyServiceAdvertiser(peer:session.myPeerID, discoveryInfo:nil, serviceType:"cl-attendees")
+        self.advertiser.delegate = self
+        self.attendeeManager = AttendeeManager()
+        self.tableView.registerClass(UITableViewCell.self, forCellReuseIdentifier: "cell")
         
+        //for test
+        var a = Attendee(firstName: "a", lastName: "b", headLine: "c", attendeeID: "d")
+        self.attendeeManager.addAttendee(newAttendee: a)
+        self.tableArrayDate = Array(self.attendeeManager.attendeeArray)
+        self.tableView.reloadData()
     }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    @IBAction func didTapStartButton(sender: UIButton) {
+        self.toggleAdvertising();
+        
+    }
+    
+    //Only react when it's poweredOn
+    func toggleAdvertising(){
+        if(self.peripheralManager.state == CBPeripheralManagerState.PoweredOn){
+            if(self.isAdvertising){
+                self.stopAdvertising()
+            } else {
+                self.startAdvertising()
+            }
+        }
+    }
+    
+    func startAdvertising(){
+        println("start advertising")
+        self.clearCurrentAttendees()
+        self.startSearchButton.setTitle("stop searching", forState: .Normal)
+        
+        var uuid = NSUUID()
+        var region = CLBeaconRegion(proximityUUID: uuid, identifier: "AttendeeCollector")
+        
+        var advertisementData = region.peripheralDataWithMeasuredPower(nil)
+        self.peripheralManager.startAdvertising(advertisementData as [NSObject : AnyObject])
+        self.advertiser.startAdvertisingPeer()
+        self.isAdvertising = true
+    }
+    
+    func stopAdvertising(){
+        println("stop advertising")
+        self.startSearchButton.setTitle("start searching", forState: .Normal)
+        self.peripheralManager.stopAdvertising()
+        self.isAdvertising = false
+    }
+    
+    
+    //clear all attendees in the includedAttendees set
+    func clearCurrentAttendees(){
+        self.includedAttendees.removeAll(keepCapacity: false)
+    }
+
+    
+    func addAttendeeToTable(){
+//        var nextRow : Int = { return (self.tableArrayDate.count-1)}()
+//        var indexPath = NSIndexPath(forRow: nextRow, inSection: 1)
+//        var indexPaths = [indexPath]
+
+        self.tableView.reloadData()
+        
+//        self.tableView.beginUpdates()
+//        self.tableView.insertRowsAtIndexPaths(indexPaths, withRowAnimation: UITableViewRowAnimation.None)
+//        self.tableView.reloadData()
+//        self.tableView.endUpdates()
+    }
+    
+    
+// MARK:implementing UITableViewDataSource and UITableViewDelegate
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int{
+        return self.tableArrayDate.count;
+    }
+    
+    // Row display. Implementers should *always* try to reuse cells by setting each cell's reuseIdentifier and querying for available reusable cells with dequeueReusableCellWithIdentifier:
+    // Cell gets various attributes set automatically based on table (separators) and data source (accessory views, editing controls)
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell{
+        var cell:UITableViewCell = self.tableView.dequeueReusableCellWithIdentifier("cell") as! UITableViewCell
+        cell.textLabel?.text = self.tableArrayDate[indexPath.row].firstName + " " + self.tableArrayDate[indexPath.row].lastName
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        println("You selected cell #\(indexPath.row)!")
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat{
+        return 60
+    }
+    
+    
+// MARK:implementing MCSessionDelegate
+    
+    // Remote peer changed state
+    func session(session: MCSession!, peer peerID: MCPeerID!, didChangeState state: MCSessionState){
+        switch (state) {
+        case MCSessionState.NotConnected:
+            println("didChangeState: Not Connected");
+            break;
+        case MCSessionState.Connected:
+            println("didChangeState: Connected");
+            break;
+        case MCSessionState.Connecting:
+            println("didChangeState: Connecting");
+            break;
+        }
+    }
+    
+    
+    
+    
+    // Received data from remote peer
+    func session(session: MCSession!, didReceiveData data: NSData!, fromPeer peerID: MCPeerID!){
+        println("didReveiveData from  \(peerID.displayName)")
+        println("\(data)")
+        var attendee: AnyObject? = NSKeyedUnarchiver.unarchiveObjectWithData(data)
+        println("Attendee: \(attendee)")
+        
+        //for test
+        var a = Attendee(firstName: peerID.displayName, lastName: "b", headLine: "c", attendeeID: "d")
+        self.attendeeManager.addAttendee(newAttendee: a)
+        self.tableArrayDate = Array(self.attendeeManager.attendeeArray)
+        
+        dispatch_sync(dispatch_get_main_queue(), {
+            self.addAttendeeToTable()
+        })
+//        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_HIGH, 0), {
+//            self.addAttendeeToTable()
+//        })
+    }
+    
+    // Received a byte stream from remote peer
+    func session(session: MCSession!, didReceiveStream stream: NSInputStream!, withName streamName: String!, fromPeer peerID: MCPeerID!){
+        println("didReceiveStream")
+    }
+    
+    // Start receiving a resource from remote peer
+    func session(session: MCSession!, didStartReceivingResourceWithName resourceName: String!, fromPeer peerID: MCPeerID!, withProgress progress: NSProgress!){
+        println("didStartReceivingResourceWithName from "+peerID.displayName)
+    }
+    
+    // Finished receiving a resource from remote peer and saved the content in a temporary location - the app is responsible for moving the file to a permanent location within its sandbox
+    func session(session: MCSession!, didFinishReceivingResourceWithName resourceName: String!, fromPeer peerID: MCPeerID!, atURL localURL: NSURL!, withError error: NSError!){
+        println("didFinishReceivingResourceWithName from "+peerID.displayName)
     }
 
 
@@ -31,11 +194,15 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate, MCNearbySer
     
     // Incoming invitation request.  Call the invitationHandler block with YES and a valid session to connect the inviting peer to the session.
     func advertiser(advertiser: MCNearbyServiceAdvertiser!, didReceiveInvitationFromPeer peerID: MCPeerID!, withContext context: NSData!, invitationHandler: ((Bool, MCSession!) -> Void)!){
+        self.session = MCSession(peer: self.localPeerID, securityIdentity: nil, encryptionPreference: MCEncryptionPreference.None)
+        self.session.delegate = self
+        invitationHandler(true,self.session)
+        println("didReceiveInvitation")
     }
     
     // Advertising did not start due to an error
-    func advertiser(advertiser: MCNearbyServiceAdvertiser!, didNotStartAdvertisingPeer error: NSError!){
-    }
+//    func advertiser(advertiser: MCNearbyServiceAdvertiser!, didNotStartAdvertisingPeer error: NSError!){
+//    }
     
     
     
@@ -56,6 +223,28 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate, MCNearbySer
     *
     */
     func peripheralManagerDidUpdateState(peripheral: CBPeripheralManager!){
+        var stateLabel:String!
+        switch (peripheral.state) {
+        case CBPeripheralManagerState.PoweredOff:
+            stateLabel = "Powered Off";
+            break;
+        case CBPeripheralManagerState.PoweredOn:
+            stateLabel = "Powered On";
+            break;
+        case CBPeripheralManagerState.Resetting:
+            stateLabel = "Resetting";
+            break;
+        case CBPeripheralManagerState.Unauthorized:
+            stateLabel = "Unauthorized";
+            break;
+        case CBPeripheralManagerState.Unknown:
+            stateLabel = "Unknown";
+            break;
+        case CBPeripheralManagerState.Unsupported:
+            stateLabel = "Unsupported";
+            break;
+        }
+        println("peripheralManagerDidUpdateState \(stateLabel)")
     }
     
     /*!
@@ -86,6 +275,11 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate, MCNearbySer
     *
     */
     func peripheralManagerDidStartAdvertising(peripheral: CBPeripheralManager!, error: NSError!){
+        if(error==nil){
+            println("start advertising")
+        } else {
+            println("\(error)")
+        }
     }
     
     /*!
@@ -142,6 +336,8 @@ class ViewController: UIViewController, CBPeripheralManagerDelegate, MCNearbySer
     *
     */
     func peripheralManager(peripheral: CBPeripheralManager!, didReceiveReadRequest request: CBATTRequest!){
+        println("didReceiveReadRequest \(request)")
+        peripheral.respondToRequest(request, withResult: CBATTError.Success)
     }
     
     /*!
